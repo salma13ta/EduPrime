@@ -31,7 +31,7 @@ export default function FAQSection() {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
 
     return (
-        <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8">
+        <section id="faq" className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8">
             <h2 className="text-gray-600 mb-12 text-center text-3xl font-black sm:text-4xl">
                 Frequently Asked <span className="text-purple-400">Questions</span>
             </h2>

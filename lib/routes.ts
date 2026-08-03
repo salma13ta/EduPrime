@@ -11,6 +11,13 @@ export const ROUTES = {
   PRICING: '/pricing',
   FAQ: '/faq',
 
+  // Navbar links for the landing page sections
+  FAQSection: '/#faq',
+  FeaturesSection: '/#courses',
+  TeachersSection: '/#teachers',
+  CentersSection: '/#centers',
+  PricingSection: '/#pricing',
+
   // Auth Routes
   LOGIN: '/login',
   REGISTER: '/register',
@@ -36,3 +43,4 @@ export const ROUTES = {
   WATCH_VIDEO: (id: string) => `/watch/${id}`,
   PROFILE: '/profile',
 } as const;
+
