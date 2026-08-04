@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  GraduationCap, 
-  School, 
-  Users, 
-  ShieldAlert, 
-  Eye, 
-  EyeOff, 
-  Star, 
-  CheckCircle2, 
-  Sparkles, 
+import {
+  GraduationCap,
+  School,
+  Users,
+  ShieldAlert,
+  Eye,
+  EyeOff,
+  Star,
+  CheckCircle2,
+  Sparkles,
   Loader2,
   X,
   Lock,
@@ -42,13 +42,13 @@ const GoogleIcon = () => (
 
 const FacebookIcon = () => (
   <svg className="w-5 h-5 fill-[#1877F2]" viewBox="0 0 24 24">
-    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
   </svg>
 );
 
 const AppleIcon = () => (
   <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.13c.63-.76 1.07-1.82.95-2.88-.93.04-2.08.62-2.74 1.39-.59.68-1.11 1.77-.97 2.82 1.05.08 2.13-.57 2.76-1.33z"/>
+    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.13c.63-.76 1.07-1.82.95-2.88-.93.04-2.08.62-2.74 1.39-.59.68-1.11 1.77-.97 2.82 1.05.08 2.13-.57 2.76-1.33z" />
   </svg>
 );
 
@@ -60,11 +60,11 @@ export default function AuthPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  
+
   // حالة المودال والتفاعل مع OAuth
   const [activeSocialModal, setActiveSocialModal] = useState<string | null>(null);
   const [socialUserEmail, setSocialUserEmail] = useState('');
-  
+
   // حالة مودال نسيت كلمة المرور
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
@@ -162,7 +162,7 @@ export default function AuthPage() {
 
   return (
     <div className="relative min-h-screen bg-[#08070d] text-white overflow-hidden font-sans select-none">
-      
+
       {/* 🔑 Forgot Password Modal */}
       <AnimatePresence>
         {isForgotPasswordOpen && (
@@ -355,10 +355,10 @@ export default function AuthPage() {
 
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 30 }}
-              animate={{ 
-                scale: transitionStage === 'portal' ? 1.5 : 1, 
+              animate={{
+                scale: transitionStage === 'portal' ? 1.5 : 1,
                 opacity: transitionStage === 'portal' ? 0 : 1,
-                y: 0 
+                y: 0
               }}
               className="relative z-10 flex flex-col items-center p-10 rounded-3xl bg-[#110f1d]/90 border border-purple-500/30 shadow-[0_0_80px_rgba(168,85,247,0.25)] text-center max-w-sm w-full mx-4"
             >
@@ -422,9 +422,9 @@ export default function AuthPage() {
       </AnimatePresence>
 
       {/* 🌌 المحتوى الرئيسي */}
-      <motion.div 
-        animate={{ 
-          scale: isSubmitting ? 0.95 : 1, 
+      <motion.div
+        animate={{
+          scale: isSubmitting ? 0.95 : 1,
           filter: isSubmitting ? 'blur(10px)' : 'blur(0px)',
           opacity: isSubmitting ? 0.4 : 1
         }}
@@ -464,7 +464,7 @@ export default function AuthPage() {
                 { title: '4.9', sub: 'Rating', icon: true },
                 { title: '98%', sub: 'Success' }
               ].map((stat, idx) => (
-                <div 
+                <div
                   key={idx}
                   className="bg-[#13111c] border border-white/5 p-4 rounded-2xl text-center"
                 >
@@ -532,11 +532,10 @@ export default function AuthPage() {
                       key={item.id}
                       type="button"
                       onClick={() => setRole(item.id as UserRole)}
-                      className={`flex flex-col items-center justify-center py-2.5 rounded-xl border text-[11px] gap-1 transition-all ${
-                        active 
-                          ? 'border-purple-500 bg-purple-500/20 text-purple-300 font-bold shadow-[0_0_15px_rgba(168,85,247,0.2)]' 
-                          : 'border-white/5 bg-[#14121c] text-gray-400 hover:border-white/10 hover:text-gray-200'
-                      }`}
+                      className={`flex flex-col items-center justify-center py-2.5 rounded-xl border text-[11px] gap-1 transition-all ${active
+                        ? 'border-purple-500 bg-purple-500/20 text-purple-300 font-bold shadow-[0_0_15px_rgba(168,85,247,0.2)]'
+                        : 'border-white/5 bg-[#14121c] text-gray-400 hover:border-white/10 hover:text-gray-200'
+                        }`}
                     >
                       <Icon className="w-4 h-4" />
                       <span>{item.label}</span>
@@ -555,9 +554,9 @@ export default function AuthPage() {
               ].map((provider) => {
                 const Icon = provider.icon;
                 return (
-                  <motion.button 
-                    key={provider.name} 
-                    type="button" 
+                  <motion.button
+                    key={provider.name}
+                    type="button"
                     whileHover={{ scale: 1.03, backgroundColor: 'rgba(255,255,255,0.08)' }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => openSocialAuthModal(provider.name)}
@@ -640,11 +639,10 @@ export default function AuthPage() {
                 whileTap={{ scale: isFormValid && !isSubmitting ? 0.97 : 1 }}
                 disabled={!isFormValid || isSubmitting}
                 type="submit"
-                className={`w-full py-3.5 rounded-xl text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${
-                  isFormValid && !isSubmitting
-                    ? 'bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 text-white shadow-purple-600/30 cursor-pointer'
-                    : 'bg-white/10 text-gray-500 cursor-not-allowed opacity-50'
-                }`}
+                className={`w-full py-3.5 rounded-xl text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${isFormValid && !isSubmitting
+                  ? 'bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 text-white shadow-purple-600/30 cursor-pointer'
+                  : 'bg-white/10 text-gray-500 cursor-not-allowed opacity-50'
+                  }`}
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 animate-spin text-white" />

@@ -24,12 +24,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         syncAuthState();
 
         window.addEventListener('storage', syncAuthState);
-        return () => window.removeEventListener('storage', syncAuthState);
+        window.addEventListener('focus', syncAuthState);
+        return () => {
+            window.removeEventListener('storage', syncAuthState);
+            window.removeEventListener('focus', syncAuthState);
+        };
     }, [pathname]);
 
     const authRoutes = ['/login', '/register'];
     const protectedRoutes = ['/student', '/teacher', '/parent', '/admin'];
-    const shouldShowHeader = !isAuthenticated && !authRoutes.includes(pathname) && !protectedRoutes.some((route) => pathname.startsWith(route));
+    const shouldShowHeader = !authRoutes.includes(pathname) && !protectedRoutes.some((route) => pathname.startsWith(route));
+    const contentPadding = shouldShowHeader ? 'pt-20' : 'pt-0';
 
     return (
         <>
@@ -39,7 +44,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
             {shouldShowHeader ? <Header /> : null}
 
-            <div className={`relative z-10 ${shouldShowHeader ? 'pt-20' : 'pt-0'}`}>
+            <div className={`relative z-10 ${contentPadding}`}>
                 {children}
             </div>
         </>

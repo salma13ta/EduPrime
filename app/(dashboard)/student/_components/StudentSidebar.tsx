@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  LayoutDashboard, BookOpen, Calendar, FileText, 
-  GraduationCap, Award, Star, TrendingUp, MessageSquare, 
-  CreditCard, Settings, LogOut, Bell, Menu, X 
+import {
+  LayoutDashboard, BookOpen, Calendar, FileText,
+  GraduationCap, Award, Star, TrendingUp, MessageSquare,
+  CreditCard, Settings, LogOut, Bell, Menu, X
 } from 'lucide-react';
 
 interface Props {
@@ -31,8 +31,8 @@ export const navItems = [
   { name: 'Settings', icon: Settings },
 ];
 
-export default function StudentSidebar({ 
-  user, activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen, onOpenNotifications 
+export default function StudentSidebar({
+  user, activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen, onOpenNotifications
 }: Props) {
   const firstName = user.name.split(' ')[0] || 'Student';
 
@@ -41,7 +41,7 @@ export default function StudentSidebar({
       {/* 📱 Mobile Top Header Navigation */}
       <div className="md:hidden flex items-center justify-between p-4 bg-[#0c0a18]/90 backdrop-blur-xl border-b border-white/10 sticky top-0 z-40">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 bg-gradient-to-tr from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
+          <div className="w-9 h-9 bg-linear-to-tr from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
             <GraduationCap className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -51,14 +51,14 @@ export default function StudentSidebar({
         </div>
 
         <div className="flex items-center gap-2">
-          <button 
+          <button
             onClick={onOpenNotifications}
             className="relative p-2 rounded-xl bg-white/5 border border-white/10 text-gray-300"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-purple-500 rounded-full animate-ping" />
           </button>
-          <button 
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-xl bg-purple-600/20 border border-purple-500/30 text-purple-300"
           >
@@ -74,7 +74,7 @@ export default function StudentSidebar({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#0a0914] border-b border-white/10 overflow-hidden sticky top-[61px] z-30 px-4 py-3 space-y-1"
+            className="md:hidden bg-[#0a0914] border-b border-white/10 overflow-hidden sticky top-15.25 z-30 px-4 py-3 space-y-1"
           >
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -86,11 +86,10 @@ export default function StudentSidebar({
                     setActiveTab(item.name);
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                    isActive
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${isActive
                       ? 'bg-purple-600 text-white font-bold shadow-lg shadow-purple-600/30'
                       : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className="w-4 h-4" />
@@ -112,7 +111,7 @@ export default function StudentSidebar({
       <aside className="hidden md:flex flex-col w-64 bg-[#0a0914] border-r border-white/5 p-5 justify-between shrink-0 min-h-screen sticky top-0 h-screen overflow-y-auto z-20">
         <div className="space-y-6">
           <div className="flex items-center gap-3 px-2">
-            <div className="w-10 h-10 bg-gradient-to-tr from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
+            <div className="w-10 h-10 bg-linear-to-tr from-purple-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -129,11 +128,10 @@ export default function StudentSidebar({
                 <button
                   key={item.name}
                   onClick={() => setActiveTab(item.name)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
-                    isActive
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${isActive
                       ? 'bg-purple-600/20 border border-purple-500/40 text-purple-300 font-semibold shadow-inner'
                       : 'text-gray-400 hover:bg-white/5 hover:text-white border border-transparent'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className="w-4 h-4" />
@@ -152,11 +150,11 @@ export default function StudentSidebar({
 
         {/* 👤 Protected Clean Profile Footer Component (No Overlaps) */}
         <div className="p-3 bg-[#121020] border border-white/10 rounded-2xl flex items-center justify-between relative overflow-hidden">
-          <div 
+          <div
             onClick={() => setActiveTab('Settings')}
             className="flex items-center gap-3 min-w-0 cursor-pointer flex-1"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-500 to-fuchsia-500 flex items-center justify-center font-bold text-xs shadow-md shrink-0 border border-white/10">
+            <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-purple-500 to-fuchsia-500 flex items-center justify-center font-bold text-xs shadow-md shrink-0 border border-white/10">
               {firstName.charAt(0)}
             </div>
             <div className="truncate">
@@ -164,8 +162,8 @@ export default function StudentSidebar({
               <p className="text-[10px] text-gray-400 truncate">{user.email}</p>
             </div>
           </div>
-          
-          <button 
+
+          <button
             onClick={() => setActiveTab('Settings')}
             className="text-gray-400 hover:text-red-400 transition-colors p-2 rounded-xl hover:bg-white/5 shrink-0 cursor-pointer"
           >

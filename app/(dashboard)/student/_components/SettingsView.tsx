@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { User, Mail, Shield, BookOpen, GraduationCap, LogOut, Check, Save } from 'lucide-react';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function SettingsView({ user, setUser, setActiveTab }: Props) {
+  const router = useRouter();
   const [formData, setFormData] = useState({ name: user.name, email: user.email });
   const [saved, setSaved] = useState(false);
 
@@ -24,7 +26,7 @@ export default function SettingsView({ user, setUser, setActiveTab }: Props) {
 
   const handleLogout = () => {
     localStorage.removeItem('eduprime_user');
-    window.location.reload();
+    router.push('/');
   };
 
   const courses = [
@@ -34,7 +36,7 @@ export default function SettingsView({ user, setUser, setActiveTab }: Props) {
   ];
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       className="space-y-6 max-w-5xl"

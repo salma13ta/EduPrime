@@ -250,7 +250,27 @@ body {
   transform: perspective(1000px) rotateX(2deg) rotateY(-4deg) translateY(-8px);
   box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 40px rgba(124,106,247,0.15);
 }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Media Query Responsive Adjustments */
+@media (max-width: 768px) {
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-cols-4, .grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
 /* Scroll reveal */
 .reveal {
   opacity: 0;
