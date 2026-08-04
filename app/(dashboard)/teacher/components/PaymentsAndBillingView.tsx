@@ -66,6 +66,13 @@ export default function PaymentsAndBillingView() {
         alert(`Successfully subscribed to the ${selectedPlan} Plan using ${paymentMethod}!`);
     };
 
+    const paymentOptions: Array<{ name: PaymentMethod; desc: string; icon: string }> = [
+        { name: 'Visa / Mastercard', desc: 'Secure card payment', icon: '💳' },
+        { name: 'Apple Pay', desc: 'Instant via Face ID', icon: '' },
+        { name: 'Google Pay', desc: 'Pay via Google account', icon: '🔵' },
+        { name: 'Wallet', desc: `${walletBalance} EGP available`, icon: '🛡️' },
+    ];
+
     return (
         <div className="w-full text-slate-100 font-sans space-y-6 pb-16">
 
@@ -247,12 +254,7 @@ export default function PaymentsAndBillingView() {
                             <h3 className="text-base font-bold text-white">Payment Method</h3>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {[
-                                    { name: 'Visa / Mastercard', desc: 'Secure card payment', icon: '💳' },
-                                    { name: 'Apple Pay', desc: 'Instant via Face ID', icon: '' },
-                                    { name: 'Google Pay', desc: 'Pay via Google account', icon: '🔵' },
-                                    { name: 'Wallet', desc: `${walletBalance} EGP available`, icon: '🛡️' },
-                                ].map((pay, idx) => {
+                                {paymentOptions.map((pay, idx) => {
                                     const isSelected = paymentMethod === pay.name;
                                     return (
                                         <div

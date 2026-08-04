@@ -28,10 +28,10 @@ const tabContentVariants = {
     opacity: 1,
     x: 0,
     scale: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 25 }
+    transition: { type: 'spring' as const, stiffness: 300, damping: 25 }
   },
   exit: { opacity: 0, x: -20, scale: 0.98, transition: { duration: 0.15 } }
-};
+} as const;
 
 export default function TeacherSettingsView({ teacherProfile, setTeacherProfile }: Props) {
   const [activeSubTab, setActiveSubTab] = useState('profile');
@@ -110,8 +110,8 @@ export default function TeacherSettingsView({ teacherProfile, setTeacherProfile 
                 key={tab.id}
                 onClick={() => setActiveSubTab(tab.id)}
                 className={`relative flex items-center gap-2.5 px-4 py-3 rounded-xl sm:rounded-2xl text-xs font-semibold transition-all whitespace-nowrap cursor-pointer shrink-0 md:w-full ${isActive
-                    ? 'text-purple-300 font-bold'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  ? 'text-purple-300 font-bold'
+                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
                   }`}
               >
                 {/* Active Tab Highlighting Animation */}
@@ -327,8 +327,8 @@ export default function TeacherSettingsView({ teacherProfile, setTeacherProfile 
                           type="button"
                           onClick={() => setTheme(mode.id as 'dark' | 'light' | 'system')}
                           className={`p-3.5 rounded-2xl border flex flex-col items-center gap-2 transition-all cursor-pointer ${isSelected
-                              ? 'bg-purple-600/20 border-purple-500 text-purple-300 font-bold shadow-lg shadow-purple-900/20'
-                              : 'bg-white/[0.02] border-white/5 text-gray-400 hover:text-white'
+                            ? 'bg-purple-600/20 border-purple-500 text-purple-300 font-bold shadow-lg shadow-purple-900/20'
+                            : 'bg-white/[0.02] border-white/5 text-gray-400 hover:text-white'
                             }`}
                         >
                           <Icon className="w-5 h-5" />

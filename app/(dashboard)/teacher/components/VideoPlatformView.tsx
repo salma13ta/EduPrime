@@ -2,8 +2,8 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Play, Pause, Volume2, VolumeX, Maximize, Heart, 
+import {
+  Play, Pause, Volume2, VolumeX, Maximize, Heart,
   CheckCircle2, Clock, Eye, Sparkles, ChevronRight, BookOpen, User,
   ThumbsUp, Share2, Bookmark, Plus, Download, Send, Check
 } from 'lucide-react';
@@ -15,16 +15,16 @@ const containerVariants = {
     opacity: 1,
     transition: { staggerChildren: 0.08, delayChildren: 0.1 }
   }
-};
+} as const;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 300, damping: 24 }
+    transition: { type: 'spring' as const, stiffness: 300, damping: 24 }
   }
-};
+} as const;
 
 const initialCourseData = {
   courseTitle: "Advanced Calculus",
@@ -103,7 +103,7 @@ export default function VideoPlatformView() {
     setLikes(lesson.likes || 247);
     setHasLiked(false);
     setIsPlaying(true);
-    setTimeout(() => videoRef.current?.play().catch(() => {}), 100);
+    setTimeout(() => videoRef.current?.play().catch(() => { }), 100);
   };
 
   const togglePlay = () => {
@@ -129,7 +129,7 @@ export default function VideoPlatformView() {
     if (navigator.share) {
       try {
         await navigator.share({ title: activeLesson.title, url: window.location.href });
-      } catch (err) {}
+      } catch (err) { }
     } else {
       navigator.clipboard.writeText(window.location.href);
       showToast("Link copied to clipboard! 📋");
@@ -191,7 +191,7 @@ export default function VideoPlatformView() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="space-y-6 max-w-[1600px] mx-auto text-white p-2 sm:p-4 font-sans relative"
@@ -213,16 +213,16 @@ export default function VideoPlatformView() {
       </AnimatePresence>
 
       {/* Header Banner with Gradient Glow */}
-      <motion.div 
+      <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 sm:p-6 rounded-3xl bg-[#110f22] border border-white/5 relative overflow-hidden shadow-2xl"
       >
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-0 right-0 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" 
+          className="absolute top-0 right-0 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"
         />
 
         <div className="space-y-1.5 z-10">
@@ -261,9 +261,9 @@ export default function VideoPlatformView() {
 
         {/* Left Section (Player & Interactions) */}
         <div className="lg:col-span-2 space-y-6">
-          
+
           {/* Animated Video Player */}
-          <motion.div 
+          <motion.div
             initial={{ scale: 0.98, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4 }}
@@ -279,7 +279,7 @@ export default function VideoPlatformView() {
             />
 
             {/* Hover Controls Bar */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
@@ -293,19 +293,19 @@ export default function VideoPlatformView() {
 
               <div className="flex items-center justify-between pointer-events-auto bg-black/60 backdrop-blur-md p-2.5 sm:p-3 rounded-2xl border border-white/10 shadow-lg">
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={togglePlay} 
+                    onClick={togglePlay}
                     className="p-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-lg shadow-purple-600/40 cursor-pointer"
                   >
                     {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white ml-0.5" />}
                   </motion.button>
 
-                  <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={toggleMute} 
+                    onClick={toggleMute}
                     className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
                   >
                     {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -315,21 +315,20 @@ export default function VideoPlatformView() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={handleLike}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                      hasLiked 
-                        ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' 
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${hasLiked
+                        ? 'bg-rose-500/20 text-rose-400 border-rose-500/30'
                         : 'bg-white/10 text-gray-300 border-white/10 hover:bg-white/20'
-                    }`}
+                      }`}
                   >
                     <Heart className={`w-3.5 h-3.5 ${hasLiked ? 'fill-rose-400' : ''}`} />
                     <span>{likes}</span>
                   </motion.button>
 
-                  <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={() => videoRef.current?.requestFullscreen()}
@@ -343,7 +342,7 @@ export default function VideoPlatformView() {
 
             {/* Play Button Pulsing Overlay */}
             {!isPlaying && (
-              <motion.button 
+              <motion.button
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 whileHover={{ scale: 1.15 }}
@@ -368,22 +367,21 @@ export default function VideoPlatformView() {
 
             <div className="flex items-center gap-2.5">
               {/* Like Button */}
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.85 }}
                 onClick={handleLike}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
-                  hasLiked 
-                    ? 'bg-purple-600/20 text-purple-300 border-purple-500/40 shadow-lg' 
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${hasLiked
+                    ? 'bg-purple-600/20 text-purple-300 border-purple-500/40 shadow-lg'
                     : 'bg-white/[0.04] text-gray-300 border-white/10 hover:bg-white/[0.08]'
-                }`}
+                  }`}
               >
                 <ThumbsUp className={`w-4 h-4 ${hasLiked ? 'text-purple-400' : ''}`} />
                 <span>{likes}</span>
               </motion.button>
 
               {/* Share Button (Activated) */}
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.85 }}
                 onClick={handleShare}
@@ -394,15 +392,14 @@ export default function VideoPlatformView() {
               </motion.button>
 
               {/* Save Button (Activated) */}
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.85 }}
                 onClick={handleToggleSave}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
-                  isSaved 
-                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-lg' 
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${isSaved
+                    ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-lg'
                     : 'bg-white/[0.04] text-gray-300 border-white/10 hover:bg-white/[0.08]'
-                }`}
+                  }`}
               >
                 {isSaved ? <Check className="w-4 h-4 text-emerald-400" /> : <Bookmark className="w-4 h-4 text-amber-400" />}
                 <span>{isSaved ? 'Saved' : 'Save'}</span>
@@ -416,14 +413,14 @@ export default function VideoPlatformView() {
               <Sparkles className="w-4 h-4 text-purple-400" /> Continue Watching
             </h3>
 
-            <motion.div 
+            <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             >
               {continueWatchingData.map((cw, idx) => (
-                <motion.div 
+                <motion.div
                   key={idx}
                   variants={itemVariants}
                   whileHover={{ y: -6, scale: 1.02 }}
@@ -433,7 +430,7 @@ export default function VideoPlatformView() {
                   <div className="relative h-32 rounded-xl overflow-hidden border border-white/10">
                     <img src={cw.thumbnail} alt={cw.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/0 transition-colors" />
-                    
+
                     <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/80 backdrop-blur-sm text-[10px] font-bold text-gray-300 border border-white/10">
                       {cw.duration}
                     </span>
@@ -467,9 +464,8 @@ export default function VideoPlatformView() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`relative px-5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    activeTab === tab ? 'text-purple-300' : 'text-gray-400 hover:text-white'
-                  }`}
+                  className={`relative px-5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === tab ? 'text-purple-300' : 'text-gray-400 hover:text-white'
+                    }`}
                 >
                   {activeTab === tab && (
                     <motion.div
@@ -486,7 +482,7 @@ export default function VideoPlatformView() {
             <AnimatePresence mode="wait">
               {/* TAB 1: NOTES (+ Button Animated) */}
               {activeTab === 'Notes' && (
-                <motion.div 
+                <motion.div
                   key="notes"
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -534,7 +530,7 @@ export default function VideoPlatformView() {
 
               {/* TAB 2: COMMENTS (Post Button Animated) */}
               {activeTab === 'Comments' && (
-                <motion.div 
+                <motion.div
                   key="comments"
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -580,7 +576,7 @@ export default function VideoPlatformView() {
 
               {/* TAB 3: RESOURCES (Download Icon Animated) */}
               {activeTab === 'Resources' && (
-                <motion.div 
+                <motion.div
                   key="resources"
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -590,8 +586,8 @@ export default function VideoPlatformView() {
                 >
                   <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-3">
                     {initialResources.map((res) => (
-                      <motion.div 
-                        key={res.id} 
+                      <motion.div
+                        key={res.id}
                         variants={itemVariants}
                         whileHover={{ scale: 1.01, x: 4 }}
                         className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-purple-500/30 transition-all flex items-center justify-between group"
@@ -625,7 +621,7 @@ export default function VideoPlatformView() {
         </div>
 
         {/* Right Section: Interactive Playlist */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -640,7 +636,7 @@ export default function VideoPlatformView() {
             </span>
           </div>
 
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -655,11 +651,10 @@ export default function VideoPlatformView() {
                   whileHover={{ scale: 1.02, x: 4 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => handleSelectLesson(lesson)}
-                  className={`p-2.5 rounded-2xl border flex items-center gap-3 transition-all cursor-pointer relative overflow-hidden ${
-                    isActive 
-                      ? 'bg-purple-600/25 border-purple-500/60 shadow-lg shadow-purple-900/40' 
+                  className={`p-2.5 rounded-2xl border flex items-center gap-3 transition-all cursor-pointer relative overflow-hidden ${isActive
+                      ? 'bg-purple-600/25 border-purple-500/60 shadow-lg shadow-purple-900/40'
                       : 'bg-white/[0.02] border-white/5 hover:border-white/20'
-                  }`}
+                    }`}
                 >
                   {isActive && (
                     <motion.div

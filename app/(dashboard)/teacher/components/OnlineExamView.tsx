@@ -17,16 +17,16 @@ const containerVariants = {
       delayChildren: 0.1
     }
   }
-};
+} as const;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 300, damping: 24 }
+    transition: { type: 'spring' as const, stiffness: 300, damping: 24 }
   }
-};
+} as const;
 
 interface SubmissionDetail {
   q: string;

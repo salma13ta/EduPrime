@@ -65,7 +65,7 @@ export default function AnalyticsView() {
     { name: 'Biology', percent: 12, bg: 'bg-amber-500' },
   ];
 
-  const heatmapCells = [
+  const heatmapCells: HeatmapCell[] = [
     { id: 1, rate: '90%', group: 'Math Group A', status: 'high' },
     { id: 2, rate: '88%', group: 'Physics Group B', status: 'medium' },
     { id: 3, rate: '95%', group: 'Chemistry Group A', status: 'high' },
