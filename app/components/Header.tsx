@@ -282,8 +282,8 @@ export default function Header() {
           )}
         </AnimatePresence>
       </header>
-
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-[92vw] sm:max-w-max" dir="ltr">
+            {/*///////////////// //navbar dack/////////////////////////////// */}
+      {/* <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-[92vw] sm:max-w-max" dir="ltr">
         <nav className="flex items-center gap-1.5 p-2 rounded-full bg-[#121524]/80 backdrop-blur-xl border border-white/10 shadow-2xl overflow-x-auto scrollbar-none">
           {dockItems.map((item) => {
             const isActive = pathname === item.href;
@@ -301,7 +301,7 @@ export default function Header() {
             );
           })}
         </nav>
-      </div>
+      </div> */}
     </>
   );
 }
