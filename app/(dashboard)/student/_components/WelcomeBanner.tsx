@@ -22,15 +22,6 @@ export default function WelcomeBanner({ firstName }: { firstName: string }) {
       />
       
       <div className="relative z-10 space-y-4 max-w-2xl">
-        <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold"
-        >
-          <Flame className="w-3.5 h-3.5 fill-emerald-400 animate-pulse" />
-          <span>7-Day Streak!</span>
-        </motion.div>
 
         <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
           Good afternoon, <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-fuchsia-400">{firstName}!</span> 👋
@@ -55,7 +46,6 @@ export default function WelcomeBanner({ firstName }: { firstName: string }) {
             whileTap={{ scale: 0.95 }}
             className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-semibold text-gray-200 transition-all flex items-center gap-2 cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
             <span>Take Practice Exam</span>
           </motion.button>
         </div>

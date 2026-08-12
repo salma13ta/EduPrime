@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   GraduationCap,
   School,
-  Users,
   ShieldAlert,
   Eye,
   EyeOff,
@@ -21,16 +20,22 @@ import {
   Mail
 } from 'lucide-react';
 
-type UserRole = 'student' | 'teacher' | 'parent' | 'admin';
+type UserRole = 'student' | 'teacher' | 'admin';
 
 const ROLE_ROUTES: Record<UserRole, string> = {
   student: '/student',
   teacher: '/teacher',
-  parent: '/parent',
   admin: '/admin',
 };
 
-// أيقونات مزودي الخدمة المخصصة
+// خريطة بريد افتراضية نظيفة ومنفصلة لمحاكاة الـ Mock/Demo بعيداً عن الكود البرمجي الأساسي
+const MOCK_SOCIAL_EMAILS: Record<string, string> = {
+  Google: 'student.demo@gmail.com',
+  Apple: 'user.apple@icloud.com',
+  Facebook: 'facebook.user@fb.com',
+};
+
+// أيقونات مزودي الخدمة
 const GoogleIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24">
     <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z" />
@@ -61,11 +66,9 @@ export default function AuthPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  // حالة المودال والتفاعل مع OAuth
   const [activeSocialModal, setActiveSocialModal] = useState<string | null>(null);
   const [socialUserEmail, setSocialUserEmail] = useState('');
 
-  // حالة مودال نسيت كلمة المرور
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [isSendingReset, setIsSendingReset] = useState(false);
@@ -96,13 +99,12 @@ export default function AuthPage() {
       }, ms);
     });
 
-  // معالجة طلب استعادة كلمة المرور
   const handleForgotPasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!resetEmail.trim()) return;
 
     setIsSendingReset(true);
-    await waitFor(1200); // محاكاة إرسال البريد
+    await waitFor(1200);
     setIsSendingReset(false);
     setResetSent(true);
   };
@@ -113,7 +115,6 @@ export default function AuthPage() {
     setResetEmail('');
   };
 
-  // تنفيذ تسجيل الدخول النهائي
   const executeAuth = async (providerName: string, userEmailInput: string) => {
     setActiveSocialModal(null);
     setAuthProvider(providerName);
@@ -155,9 +156,7 @@ export default function AuthPage() {
 
   const openSocialAuthModal = (provider: string) => {
     setActiveSocialModal(provider);
-    if (provider === 'Google') setSocialUserEmail('student.demo@gmail.com');
-    if (provider === 'Apple') setSocialUserEmail('user.apple@icloud.com');
-    if (provider === 'Facebook') setSocialUserEmail('facebook.user@fb.com');
+    setSocialUserEmail(MOCK_SOCIAL_EMAILS[provider] || '');
   };
 
   return (
@@ -173,20 +172,21 @@ export default function AuthPage() {
             className="fixed inset-0 z-[130] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="relative w-full max-w-md bg-[#12101f] border border-purple-500/30 rounded-3xl p-6 shadow-2xl shadow-purple-900/40 overflow-hidden"
             >
               <button
                 onClick={closeForgotPasswordModal}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all"
+                className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
 
               <div className="flex flex-col items-center text-center mt-2">
-                <div className="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-4 text-purple-400">
+                <div className="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-4 text-purple-400 shadow-lg shadow-purple-500/10">
                   <KeyRound className="w-7 h-7" />
                 </div>
 
@@ -210,7 +210,7 @@ export default function AuthPage() {
                           value={resetEmail}
                           onChange={(e) => setResetEmail(e.target.value)}
                           placeholder="name@example.com"
-                          className="w-full px-4 py-3 pl-10 rounded-xl bg-[#0a0912] border border-white/10 text-xs text-white focus:border-purple-500 focus:outline-none"
+                          className="w-full px-4 py-3 pl-10 rounded-xl bg-[#0a0912] border border-white/15 text-xs text-white focus:border-purple-500 focus:outline-none transition-colors"
                         />
                         <Mail className="w-4 h-4 text-gray-500 absolute left-3 top-3.5" />
                       </div>
@@ -221,7 +221,7 @@ export default function AuthPage() {
                       whileTap={{ scale: 0.98 }}
                       disabled={isSendingReset || !resetEmail.trim()}
                       type="submit"
-                      className="w-full py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30 text-white flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30 text-white flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                     >
                       {isSendingReset ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -239,7 +239,7 @@ export default function AuthPage() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={closeForgotPasswordModal}
-                      className="w-full py-3 bg-purple-600/20 border border-purple-500/40 rounded-xl text-xs font-bold text-purple-300 hover:bg-purple-600/30 transition-all"
+                      className="w-full py-3 bg-purple-600/20 border border-purple-500/40 rounded-xl text-xs font-bold text-purple-300 hover:bg-purple-600/30 transition-all cursor-pointer"
                     >
                       Back to Sign In
                     </motion.button>
@@ -261,14 +261,15 @@ export default function AuthPage() {
             className="fixed inset-0 z-[120] flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="relative w-full max-w-md bg-[#12101f] border border-purple-500/30 rounded-3xl p-6 shadow-2xl shadow-purple-900/40 overflow-hidden"
             >
               <button
                 onClick={() => setActiveSocialModal(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all"
+                className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -291,11 +292,11 @@ export default function AuthPage() {
                   <div className="p-3.5 bg-[#1a172c] border border-purple-500/30 rounded-2xl flex items-center justify-between text-left hover:border-purple-500 transition-all cursor-pointer">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-sm font-bold text-white shadow-md">
-                        {socialUserEmail.charAt(0).toUpperCase()}
+                        {socialUserEmail ? socialUserEmail.charAt(0).toUpperCase() : 'U'}
                       </div>
                       <div>
                         <p className="text-xs font-bold text-white capitalize">{activeSocialModal} Account</p>
-                        <p className="text-[11px] text-gray-400">{socialUserEmail}</p>
+                        <p className="text-[11px] text-gray-400">{socialUserEmail || 'No email provided'}</p>
                       </div>
                     </div>
                     <CheckCircle2 className="w-5 h-5 text-purple-400" />
@@ -307,7 +308,7 @@ export default function AuthPage() {
                       type="email"
                       value={socialUserEmail}
                       onChange={(e) => setSocialUserEmail(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#0a0912] border border-white/10 text-xs text-white focus:border-purple-500 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#0a0912] border border-white/15 text-xs text-white focus:border-purple-500 focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -316,7 +317,7 @@ export default function AuthPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => executeAuth(activeSocialModal, socialUserEmail)}
-                  className="w-full mt-6 py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30 text-white flex items-center justify-center gap-2"
+                  className="w-full mt-6 py-3 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-indigo-600 rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30 text-white flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Lock className="w-3.5 h-3.5" />
                   <span>Authorize & Continue</span>
@@ -331,7 +332,7 @@ export default function AuthPage() {
         )}
       </AnimatePresence>
 
-      {/* 🔮 أنميشن الترانزيشن */}
+      {/* 🔮 أنميشن الترانزيشن البصري الخارق */}
       <AnimatePresence>
         {isSubmitting && (
           <motion.div
@@ -342,40 +343,41 @@ export default function AuthPage() {
           >
             <motion.div
               animate={{
-                scale: transitionStage === 'portal' ? [1, 2.5, 30] : [0.8, 1.2, 1],
-                opacity: transitionStage === 'portal' ? [0.6, 1, 1] : [0.3, 0.6, 0.3],
+                scale: transitionStage === 'portal' ? [1, 2.5, 35] : [0.8, 1.3, 1],
+                opacity: transitionStage === 'portal' ? [0.6, 1, 1] : [0.2, 0.5, 0.2],
               }}
               transition={{
-                duration: transitionStage === 'portal' ? 0.6 : 2,
+                duration: transitionStage === 'portal' ? 0.7 : 2.5,
                 repeat: transitionStage === 'portal' ? 0 : Infinity,
                 ease: 'easeInOut',
               }}
-              className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-600/30 via-fuchsia-600/30 to-indigo-600/30 blur-3xl"
+              className="absolute w-[600px] h-[600px] rounded-full bg-gradient-to-r from-purple-600/30 via-fuchsia-600/30 to-indigo-600/30 blur-3xl pointer-events-none"
             />
 
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 30 }}
               animate={{
-                scale: transitionStage === 'portal' ? 1.5 : 1,
+                scale: transitionStage === 'portal' ? 1.4 : 1,
                 opacity: transitionStage === 'portal' ? 0 : 1,
                 y: 0
               }}
-              className="relative z-10 flex flex-col items-center p-10 rounded-3xl bg-[#110f1d]/90 border border-purple-500/30 shadow-[0_0_80px_rgba(168,85,247,0.25)] text-center max-w-sm w-full mx-4"
+              transition={{ type: 'spring', damping: 20 }}
+              className="relative z-10 flex flex-col items-center p-10 rounded-3xl bg-[#110f1d]/90 border border-purple-500/40 shadow-[0_0_90px_rgba(168,85,247,0.3)] text-center max-w-sm w-full mx-4"
             >
               <AnimatePresence mode="wait">
                 {transitionStage === 'loading' && (
                   <motion.div
                     key="loading"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex flex-col items-center"
+                    initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                    className="flex flex-col items-center w-full"
                   >
                     <div className="relative flex items-center justify-center mb-6">
                       <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-                        className="w-16 h-16 rounded-full border-2 border-transparent border-t-purple-500 border-r-fuchsia-500"
+                        transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+                        className="w-16 h-16 rounded-full border-2 border-transparent border-t-purple-500 border-r-fuchsia-500 border-b-indigo-500"
                       />
                       <Sparkles className="w-6 h-6 text-purple-400 absolute animate-pulse" />
                     </div>
@@ -387,7 +389,7 @@ export default function AuthPage() {
                       Opening {role} Dashboard...
                     </p>
 
-                    <div className="mt-6 w-48 h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/10 p-0.5">
+                    <div className="mt-6 w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/10 p-0.5">
                       <motion.div
                         className="h-full bg-gradient-to-r from-purple-500 via-fuchsia-500 to-indigo-500 rounded-full"
                         initial={{ width: '0%' }}
@@ -405,9 +407,14 @@ export default function AuthPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="flex flex-col items-center"
                   >
-                    <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-4 text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                    <motion.div 
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", damping: 15 }}
+                      className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-4 text-emerald-400 shadow-[0_0_35px_rgba(16,185,129,0.4)]"
+                    >
                       <CheckCircle2 className="w-10 h-10" />
-                    </div>
+                    </motion.div>
 
                     <h3 className="text-xl font-bold text-white">Authenticated</h3>
                     <p className="mt-1 text-xs text-emerald-400 font-medium capitalize">
@@ -424,9 +431,9 @@ export default function AuthPage() {
       {/* 🌌 المحتوى الرئيسي */}
       <motion.div
         animate={{
-          scale: isSubmitting ? 0.95 : 1,
-          filter: isSubmitting ? 'blur(10px)' : 'blur(0px)',
-          opacity: isSubmitting ? 0.4 : 1
+          scale: isSubmitting ? 0.96 : 1,
+          filter: isSubmitting ? 'blur(8px)' : 'blur(0px)',
+          opacity: isSubmitting ? 0.3 : 1
         }}
         transition={{ duration: 0.4 }}
         className="min-h-screen flex"
@@ -435,18 +442,18 @@ export default function AuthPage() {
         <div className="hidden lg:flex flex-1 flex-col justify-between p-12 relative bg-gradient-to-br from-[#0e0c19] via-[#08070d] to-[#120a21]">
           <div className="relative w-full max-w-xl mx-auto my-auto flex flex-col items-center text-center">
             <motion.div
-              animate={{ y: [0, -8, 0] }}
+              animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-12 right-10 bg-[#161324]/80 backdrop-blur-md border border-white/10 px-4 py-2 rounded-2xl text-left shadow-xl"
+              className="absolute -top-12 right-10 bg-[#161324]/80 backdrop-blur-md border border-white/10 px-4 py-2.5 rounded-2xl text-left shadow-2xl"
             >
               <p className="text-xs font-bold text-white">Sarah K.</p>
-              <p className="text-[11px] text-purple-400">Scored 98% in Math!</p>
+              <p className="text-[11px] text-purple-400 font-medium">Scored 98% in Math!</p>
             </motion.div>
 
             <motion.div
-              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileHover={{ scale: 1.08, rotate: 6 }}
               whileTap={{ scale: 0.95 }}
-              className="w-24 h-24 bg-gradient-to-tr from-purple-600 to-indigo-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/20 mb-8 border border-white/10 cursor-pointer"
+              className="w-24 h-24 bg-gradient-to-tr from-purple-600 to-indigo-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/30 mb-8 border border-white/15 cursor-pointer"
             >
               <GraduationCap className="w-14 h-14 text-white" />
             </motion.div>
@@ -466,7 +473,7 @@ export default function AuthPage() {
               ].map((stat, idx) => (
                 <div
                   key={idx}
-                  className="bg-[#13111c] border border-white/5 p-4 rounded-2xl text-center"
+                  className="bg-[#13111c] border border-white/5 p-4 rounded-2xl text-center shadow-inner"
                 >
                   <h3 className="text-xl font-bold text-white flex items-center justify-center gap-1">
                     {stat.title}
@@ -494,14 +501,14 @@ export default function AuthPage() {
                 <button
                   type="button"
                   onClick={() => setIsSignUp(false)}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${!isSignUp ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:text-white'}`}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${!isSignUp ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:text-white'}`}
                 >
                   Sign In
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsSignUp(true)}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${isSignUp ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:text-white'}`}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${isSignUp ? 'bg-purple-600 text-white shadow-md' : 'text-gray-400 hover:text-white'}`}
                 >
                   Sign Up
                 </button>
@@ -518,11 +525,10 @@ export default function AuthPage() {
             {/* Role Buttons */}
             <div className="mb-5 space-y-1.5">
               <label className="text-xs text-gray-400">Select Role</label>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {[
                   { id: 'student', label: 'Student', icon: GraduationCap },
                   { id: 'teacher', label: 'Teacher', icon: School },
-                  { id: 'parent', label: 'Parent', icon: Users },
                   { id: 'admin', label: 'Admin', icon: ShieldAlert },
                 ].map((item) => {
                   const Icon = item.icon;
@@ -532,8 +538,8 @@ export default function AuthPage() {
                       key={item.id}
                       type="button"
                       onClick={() => setRole(item.id as UserRole)}
-                      className={`flex flex-col items-center justify-center py-2.5 rounded-xl border text-[11px] gap-1 transition-all ${active
-                        ? 'border-purple-500 bg-purple-500/20 text-purple-300 font-bold shadow-[0_0_15px_rgba(168,85,247,0.2)]'
+                      className={`flex flex-col items-center justify-center py-2.5 rounded-xl border text-[11px] gap-1 transition-all cursor-pointer ${active
+                        ? 'border-purple-500 bg-purple-500/20 text-purple-300 font-bold shadow-[0_0_15px_rgba(168,85,247,0.25)]'
                         : 'border-white/5 bg-[#14121c] text-gray-400 hover:border-white/10 hover:text-gray-200'
                         }`}
                     >
@@ -560,7 +566,7 @@ export default function AuthPage() {
                     whileHover={{ scale: 1.03, backgroundColor: 'rgba(255,255,255,0.08)' }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => openSocialAuthModal(provider.name)}
-                    className="py-2.5 px-3 bg-[#14121c] border border-white/10 rounded-xl text-xs text-gray-200 hover:border-purple-500/50 transition-all font-medium flex items-center justify-center gap-2 shadow-sm"
+                    className="py-2.5 px-3 bg-[#14121c] border border-white/10 rounded-xl text-xs text-gray-200 hover:border-purple-500/50 transition-all font-medium flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                   >
                     <Icon />
                     <span>{provider.name}</span>
@@ -576,18 +582,25 @@ export default function AuthPage() {
 
             {/* Form */}
             <form onSubmit={handleFormSubmit} className="space-y-4">
-              {isSignUp && (
-                <div>
-                  <label className="text-xs text-gray-300 mb-1 block">Full Name</label>
-                  <input
-                    type="text"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder="Alex Johnson"
-                    className="w-full px-4 py-3 rounded-xl bg-[#14121c] border border-white/10 text-xs text-white focus:border-purple-500 focus:outline-none"
-                  />
-                </div>
-              )}
+              <AnimatePresence mode="popLayout">
+                {isSignUp && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, y: -10 }}
+                    animate={{ opacity: 1, height: 'auto', y: 0 }}
+                    exit={{ opacity: 0, height: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <label className="text-xs text-gray-300 mb-1 block">Full Name</label>
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="Alex Johnson"
+                      className="w-full px-4 py-3 rounded-xl bg-[#14121c] border border-white/15 text-xs text-white focus:border-purple-500 focus:outline-none transition-colors"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <div>
                 <label className="text-xs text-gray-300 mb-1 block">Email address</label>
@@ -596,7 +609,7 @@ export default function AuthPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex@example.com"
-                  className="w-full px-4 py-3 rounded-xl bg-[#14121c] border border-white/10 text-xs text-white focus:border-purple-500 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl bg-[#14121c] border border-white/15 text-xs text-white focus:border-purple-500 focus:outline-none transition-colors"
                 />
               </div>
 
@@ -607,7 +620,7 @@ export default function AuthPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        setResetEmail(email); // تعبئة الإيميل المكتوب تلقائياً
+                        setResetEmail(email);
                         setIsForgotPasswordOpen(true);
                       }}
                       className="text-[11px] text-purple-400 hover:underline cursor-pointer"
@@ -622,12 +635,12 @@ export default function AuthPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-4 py-3 rounded-xl bg-[#14121c] border border-white/10 text-xs text-white focus:border-purple-500 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-xl bg-[#14121c] border border-white/15 text-xs text-white focus:border-purple-500 focus:outline-none transition-colors"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3.5 text-gray-500 hover:text-white"
+                    className="absolute right-3 top-3.5 text-gray-500 hover:text-white cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -655,7 +668,7 @@ export default function AuthPage() {
 
           <p className="text-center text-xs text-gray-400 mt-6">
             {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-            <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="text-purple-400 font-semibold hover:underline">
+            <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="text-purple-400 font-semibold hover:underline cursor-pointer">
               {isSignUp ? 'Sign In' : 'Sign up free'}
             </button>
           </p>

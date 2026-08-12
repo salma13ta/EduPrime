@@ -34,7 +34,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     const authRoutes = ['/login', '/register'];
     const protectedRoutes = ['/student', '/teacher', '/parent', '/admin'];
     const shouldShowHeader = !authRoutes.includes(pathname) && !protectedRoutes.some((route) => pathname.startsWith(route));
-    const contentPadding = shouldShowHeader ? 'pt-20' : 'pt-0';
+    const contentPadding = shouldShowHeader ? 'pt-16 sm:pt-20' : 'pt-0';
 
     return (
         <>

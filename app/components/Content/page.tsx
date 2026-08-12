@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
 import {
   BookOpen,
   Search,
@@ -57,37 +57,54 @@ const scaleIn: Variants = {
   },
 };
 
+const sectionReveal: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function EduPrimeLanding() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
+  const floatingTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 4, repeat: Infinity, ease: "easeInOut" as const };
+
   return (
     <div className="text-white font-sans selection:bg-purple-500 selection:text-white overflow-x-hidden relative pb-28">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-purple-600/15 blur-[140px] pointer-events-none rounded-full" />
-      <div className="absolute top-[40%] right-0 w-[500px] h-[500px] bg-blue-600/10 blur-[160px] pointer-events-none rounded-full" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[75vw] max-w-[800px] h-[260px] sm:h-[400px] bg-purple-600/15 blur-[140px] pointer-events-none rounded-full" />
+      <div className="absolute top-[40%] right-0 w-[70vw] max-w-[500px] h-[70vw] max-h-[500px] bg-blue-600/10 blur-[160px] pointer-events-none rounded-full" />
 
-      <section className="relative pt-12 md:pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+      <section className="relative pt-10 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center sm:pt-12 md:pt-20 md:pb-16">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-xs sm:text-sm text-gray-300 mb-8 hover:border-purple-500/50 transition-all cursor-pointer"
+          className="inline-flex max-w-full items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-[10px] sm:text-sm text-gray-300 mb-7 sm:mb-8 hover:border-purple-500/50 transition-all cursor-pointer"
         >
-          <span className="px-2 py-0.5 rounded-full bg-purple-600 text-white font-bold text-[10px] uppercase tracking-wider">
+          <span className="px-2 py-0.5 rounded-full bg-purple-600 text-white font-bold text-[9px] sm:text-[10px] uppercase tracking-wider">
             NEW
           </span>
-          <span>AI-powered learning paths now available</span>
-          <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+          <span className="truncate">AI-powered learning paths now available</span>
+          <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
         </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.1] max-w-4xl mx-auto"
+          className="text-4xl sm:text-6xl md:text-7xl font-black tracking-[-0.06em] text-white leading-[0.96] max-w-4xl mx-auto max-sm:text-[2.6rem]"
         >
           Learn From The <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-300 to-cyan-400">
@@ -100,7 +117,7 @@ export default function EduPrimeLanding() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed"
+          className="mt-5 text-sm sm:text-lg text-gray-400 max-w-xl mx-auto leading-relaxed sm:mt-6 max-sm:px-2"
         >
           Connect with expert teachers, discover top learning centers, and unlock your full potential with our AI-powered educational platform.
         </motion.p>
@@ -109,15 +126,17 @@ export default function EduPrimeLanding() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-10 max-w-2xl mx-auto bg-[#131625]/90 border border-white/10 rounded-2xl p-2 flex items-center gap-2 shadow-2xl focus-within:border-purple-500/60 transition-all"
+          className="mt-8 max-w-2xl mx-auto bg-[#131625]/90 border border-white/10 rounded-2xl p-2 flex items-center gap-2 shadow-2xl focus-within:border-purple-500/60 transition-all sm:mt-10 max-sm:flex-col max-sm:rounded-xl max-sm:p-3 max-sm:gap-3"
         >
-          <Search className="w-5 h-5 text-gray-400 ml-3 shrink-0" />
-          <input
-            type="text"
-            placeholder="Search teachers, subjects, centers..."
-            className="w-full bg-transparent border-none text-sm text-white placeholder-gray-500 focus:outline-none"
-          />
-          <button className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all shrink-0">
+          <div className="flex w-full items-center gap-2 max-sm:w-full">
+            <Search className="w-5 h-5 text-gray-400 ml-3 shrink-0 max-sm:ml-0" />
+            <input
+              type="text"
+              placeholder="Search teachers, subjects, centers..."
+              className="w-full bg-transparent border-none text-sm text-white placeholder-gray-500 focus:outline-none max-sm:text-center"
+            />
+          </div>
+          <button className="px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all shrink-0 w-full sm:w-auto">
             Search
           </button>
         </motion.div>
@@ -126,17 +145,17 @@ export default function EduPrimeLanding() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-4"
+          className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4 sm:mt-8"
         >
           <Link
             href={ROUTES.COURSES}
-            className="px-8 py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm shadow-xl shadow-purple-600/30 flex items-center gap-2 transition-all active:scale-95"
+            className="px-6 py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm shadow-xl shadow-purple-600/30 flex items-center gap-2 transition-all active:scale-95 max-sm:w-full max-sm:justify-center sm:px-8"
           >
             <BookOpen className="w-4 h-4" /> Start Learning
           </Link>
           <Link
             href={ROUTES.WATCH_VIDEO("intro")}
-            className="px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm flex items-center gap-2 transition-all"
+            className="px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm flex items-center gap-2 transition-all max-sm:w-full max-sm:justify-center sm:px-8"
           >
             Watch Demo
           </Link>
@@ -146,7 +165,7 @@ export default function EduPrimeLanding() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="mt-16 relative max-w-4xl mx-auto rounded-3xl overflow-hidden border border-white/10 bg-[#131625]/60 p-2 sm:p-4 shadow-2xl backdrop-blur-sm"
+          className="mt-12 relative max-w-4xl mx-auto rounded-3xl overflow-hidden border border-white/10 bg-[#131625]/60 p-2 shadow-2xl backdrop-blur-sm sm:mt-16 sm:p-4"
         >
           <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-gradient-to-br from-purple-900/30 to-slate-900">
             <Image
@@ -160,8 +179,8 @@ export default function EduPrimeLanding() {
           </div>
 
           <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            animate={prefersReducedMotion ? { y: 0 } : { y: [0, -8, 0] }}
+            transition={floatingTransition}
             className="absolute top-6 left-6 hidden sm:flex items-center gap-3 bg-[#1c1f30]/90 border border-white/10 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md"
           >
             <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
@@ -171,8 +190,8 @@ export default function EduPrimeLanding() {
           </motion.div>
 
           <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 5, delay: 1, ease: "easeInOut" }}
+            animate={prefersReducedMotion ? { y: 0 } : { y: [0, -10, 0] }}
+            transition={{ ...floatingTransition, delay: 1 }}
             className="absolute top-8 right-6 hidden sm:flex items-center gap-2 bg-[#1c1f30]/90 border border-amber-500/30 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md"
           >
             <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
@@ -180,8 +199,8 @@ export default function EduPrimeLanding() {
           </motion.div>
 
           <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ repeat: Infinity, duration: 4.5, delay: 0.5, ease: "easeInOut" }}
+            animate={prefersReducedMotion ? { y: 0 } : { y: [0, -8, 0] }}
+            transition={{ ...floatingTransition, delay: 0.5 }}
             className="absolute bottom-10 left-8 hidden sm:flex items-center gap-3 bg-[#1c1f30]/90 border border-white/10 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md"
           >
             <div className="p-2 rounded-xl bg-purple-500/20 text-purple-400">
@@ -191,8 +210,8 @@ export default function EduPrimeLanding() {
           </motion.div>
 
           <motion.div
-            animate={{ y: [0, -12, 0] }}
-            transition={{ repeat: Infinity, duration: 4.8, delay: 1.5, ease: "easeInOut" }}
+            animate={prefersReducedMotion ? { y: 0 } : { y: [0, -12, 0] }}
+            transition={{ ...floatingTransition, delay: 1.5 }}
             className="absolute bottom-8 right-8 hidden sm:flex items-center gap-3 bg-[#1c1f30]/90 border border-emerald-500/30 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md"
           >
             <div className="p-1.5 rounded-full bg-emerald-500/20 text-emerald-400">
@@ -203,7 +222,7 @@ export default function EduPrimeLanding() {
         </motion.div>
       </section>
 
-      <section className="py-12 border-y border-white/5 bg-white/[0.01]">
+      <section className="py-12 border-y border-white/5 bg-white/1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xs font-semibold tracking-widest text-gray-500 uppercase mb-8">
             Trusted by students at
@@ -234,7 +253,7 @@ export default function EduPrimeLanding() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, amount: 0.2, margin: "-80px" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {[
@@ -262,19 +281,19 @@ export default function EduPrimeLanding() {
       <section id="courses" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <motion.h2
-            variants={fadeInUp}
+            variants={sectionReveal}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.25 }}
             className="text-3xl sm:text-5xl font-black tracking-tight"
           >
             Explore <span className="text-purple-400">Every Subject</span>
           </motion.h2>
           <motion.p
-            variants={fadeInUp}
+            variants={sectionReveal}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.25 }}
             className="text-gray-400 mt-3 text-sm sm:text-base"
           >
             From core academics to creative arts — find expert guidance in every field.
@@ -285,7 +304,7 @@ export default function EduPrimeLanding() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.2, margin: "-50px" }}
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
         >
           {[

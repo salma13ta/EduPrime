@@ -7,8 +7,17 @@ import WelcomeBanner from '../../(dashboard)/student/_components/WelcomeBanner';
 import StatCards from '../../(dashboard)/student/_components/StatCards';
 import PerformanceSection from '../../(dashboard)/student/_components/PerformanceSection';
 import CoursesAndSidebar from '../../(dashboard)/student/_components/CoursesAndSidebar';
+import CoursesView from '../../(dashboard)/student/_components/CoursesView';
+import HybridScheduleSection from '../../(dashboard)/student/_components/HybridScheduleSection';
+import HomeworkHubSection from '../../(dashboard)/student/_components/HomeworkHubSection';
+import ExamsHubSection from '../../(dashboard)/student/_components/ExamsHubSection';
+import CertificatesSection from '../../(dashboard)/student/_components/CertificatesSection';
+import AchievementsSection from '../../(dashboard)/student/_components/AchievementsSection'; 
 import SettingsView from '../../(dashboard)/student/_components/SettingsView';
 import NotificationsModal from '../../(dashboard)/student/_components/NotificationsModal';
+import TeacherChatSection from '../../(dashboard)/student/_components/TeacherChatSection';
+import PaymentsBillingSection from '../../(dashboard)/student/_components/PaymentsBillingSection';
+import ProgressSection from '../../(dashboard)/student/_components/ProgressSection';
 
 interface UserData {
     name: string;
@@ -53,8 +62,9 @@ export default function StudentDashboardShell() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('Dashboard');
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
-    const firstName = user.name.split(' ')[0] || 'Student';
+    const displayName = user.name ? user.name.split(' ')[0] : 'Student';
 
     return (
         <div className="min-h-screen bg-[#08070d] text-white flex flex-col md:flex-row font-sans selection:bg-purple-500 selection:text-white relative">
@@ -75,12 +85,7 @@ export default function StudentDashboardShell() {
             <main className="flex-1 p-4 md:p-8 space-y-6 overflow-x-hidden">
                 <div className="hidden md:flex items-center justify-between gap-4">
                     <div className="relative flex-1 max-w-md">
-                        <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
-                        <input
-                            type="text"
-                            placeholder="Search courses, assignments..."
-                            className="w-full pl-10 pr-4 py-2.5 bg-[#12101e] border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 transition-all"
-                        />
+                      
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -95,26 +100,72 @@ export default function StudentDashboardShell() {
                             onClick={() => setActiveTab('Settings')}
                             className="w-9 h-9 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center font-bold text-xs text-purple-300 cursor-pointer hover:scale-105 transition-all"
                         >
-                            {firstName.charAt(0)}
+                            {displayName.charAt(0).toUpperCase()}
                         </div>
                     </div>
                 </div>
 
                 {activeTab === 'Dashboard' && (
                     <>
-                        <WelcomeBanner firstName={firstName} />
-                        <StatCards />
+                        <WelcomeBanner firstName={displayName} />
                         <PerformanceSection />
-                        <CoursesAndSidebar firstName={firstName} />
+                        <StatCards />
+                        <CoursesAndSidebar firstName={displayName} />
                     </>
+                )}
+
+                {activeTab === 'Progress' && (
+                    <ProgressSection completionRate={91} />
+                )}
+
+                {activeTab === 'My Courses' && (
+                    <CoursesView />
+                )}
+
+                {activeTab === 'Schedule' && (
+                    <HybridScheduleSection />
+                )}
+
+                {activeTab === 'Homework' && (
+                    <HomeworkHubSection />
+                )}
+
+                {activeTab === 'Exams' && (
+                    <ExamsHubSection />
+                )}
+
+                {activeTab === 'Certificates' && (
+                    <CertificatesSection />
+                )}
+
+                {activeTab === 'Achievements' && (
+                    <AchievementsSection />
+                )}
+
+                {activeTab === 'Messages' && (
+                    <TeacherChatSection />
+                )}
+
+                {activeTab === 'Payments' && (
+                    <PaymentsBillingSection />
                 )}
 
                 {activeTab === 'Settings' && (
                     <SettingsView user={user} setUser={setUser} setActiveTab={setActiveTab} />
                 )}
 
-                {activeTab !== 'Dashboard' && activeTab !== 'Settings' && (
-                    <div className="p-8 rounded-3xl bg-[#110f1e] border border-white/5 min-h-112.5 flex flex-col items-center justify-center text-center space-y-3">
+                {activeTab !== 'Dashboard' && 
+                 activeTab !== 'Progress' &&
+                 activeTab !== 'My Courses' && 
+                 activeTab !== 'Schedule' && 
+                 activeTab !== 'Homework' && 
+                 activeTab !== 'Exams' && 
+                 activeTab !== 'Certificates' && 
+                 activeTab !== 'Achievements' && 
+                 activeTab !== 'Messages' && 
+                 activeTab !== 'Payments' &&
+                 activeTab !== 'Settings' && (
+                    <div className="p-8 rounded-3xl bg-[#110f1e] border border-white/5 min-h-[450px] flex flex-col items-center justify-center text-center space-y-3">
                         <div className="w-12 h-12 rounded-2xl bg-purple-600/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-lg mb-2">
                             {activeTab.charAt(0)}
                         </div>
